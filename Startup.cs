@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using DutchTreat.Data;
+using DutchTreat.Data.Entities;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace DutchTreat
 {
@@ -30,7 +32,11 @@ namespace DutchTreat
             });
             
             services.AddTransient<ImailService, NullMailService>();
-            services.AddMvc();
+            services.AddTransient<IRepository<Product>, ProductRepository>();
+            services.AddTransient<IRepository<Order>, OrderRepository>();
+            services.AddTransient<DbSeeder>();
+            services.AddMvc()
+                .AddJsonOptions(option => option.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +48,6 @@ namespace DutchTreat
             }else{
                 app.UseExceptionHandler("/error");
             }
-            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc(routes => {
                 routes.MapRoute(
@@ -50,6 +55,13 @@ namespace DutchTreat
                     "/{controller}/{action}/{id?}",
                     new {controller = "App", Action="Index"});
             });
+
+            if(env.IsDevelopment()){
+                using(var scope = app.ApplicationServices.CreateScope()){
+                    var seeder = scope.ServiceProvider.GetService<DbSeeder>();
+                    seeder.Seed();
+                }
+            }
         }
     }
 }

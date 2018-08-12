@@ -1,0 +1,24 @@
+@model IEnumerable<Product>
+
+
+<div class="container">
+    <div class="row">
+            @foreach(var product in @Model){
+            <div class="col-md-4 mt-4">  
+             <div class="card">
+                <img class="card-img-top img-fluid" src="~/img/@(product.ArtId).jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Category @product.Size</h5>
+                    <p class="card-text">Price: @product.Price</p>
+                    <p class="card-text">Artist: @product.Artist</p>
+                    <p class="card-text"><small>Title: @product.Title.Substring(0, @product.Title.Length-10)</small></p>
+                    @if(!String.IsNullOrEmpty(@product.ArtDescription)){
+                        <p class="card-text"><small>Art Description: @product.ArtDescription.Substring(1, 101)...</small></p>
+                    }                    
+                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                </div>
+         </div>
+           </div>
+            }
+        </div>
+    </div>
