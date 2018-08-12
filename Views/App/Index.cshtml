@@ -1,0 +1,20 @@
+
+@{
+    ViewBag.Title = "Home Page";
+    List<string> animals = new List<string>();
+        animals.Add("James");
+        animals.Add("Rabbit");
+        animals.Add("Peter");
+        animals.Add("Johnny");
+        ViewBag.animals = animals;
+}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7 mx-auto">
+             @foreach(var animal in ViewBag.animals){
+            <h1>@animal</h1>
+        }
+        </div>
+      </div>
+    </div>      
+     
