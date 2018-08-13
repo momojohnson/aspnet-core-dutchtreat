@@ -8,6 +8,9 @@ namespace DutchTreat.Services
            IEnumerable<T> GetAll();
 
           IEnumerable<T> GetProductByCategory (string category);
+          T GetOrderById(int id);
+
+          void SaveEntity(T item);
 
           bool saveAll();
     }

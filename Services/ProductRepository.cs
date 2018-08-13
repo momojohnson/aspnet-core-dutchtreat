@@ -62,6 +62,14 @@ namespace DutchTreat.Services
             
         }
 
-        
+        public Product GetOrderById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveEntity(Product item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

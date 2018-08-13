@@ -21,7 +21,21 @@ namespace DutchTreat.Services
         }
         public IEnumerable<Order> GetAll()
         {
-            return _context.Orders.Include(o => o.Items).ToList();
+            return _context.Orders
+            .Include(o => o.Items)
+            .ThenInclude(o => o.Product)
+            .ToList();
+        }
+
+        public Order GetOrderById(int id)
+        {
+           return _context
+                    .Orders
+                    .Include( o => o.Items)
+                    .ThenInclude(o => o.Product)
+                    .Where(o => o.Id == id)
+                    .FirstOrDefault();
+                    
         }
 
         public IEnumerable<Order> GetProductByCategory(string category)
@@ -31,7 +45,12 @@ namespace DutchTreat.Services
 
         public bool saveAll()
         {
-            throw new System.NotImplementedException();
+            return _context.SaveChanges() > 0;
+        }
+
+        public void SaveEntity(Order item)
+        {
+            _context.Add(item);
         }
     }
 }

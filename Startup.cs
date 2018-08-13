@@ -12,6 +12,7 @@ using DutchTreat.Data;
 using DutchTreat.Data.Entities;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using AutoMapper;
 
 namespace DutchTreat
 {
@@ -30,7 +31,7 @@ namespace DutchTreat
             services.AddDbContext<DutchContext>(cfg =>{
                 cfg.UseSqlServer(_config.GetConnectionString("DutchConnectString"));
             });
-            
+            services.AddAutoMapper();
             services.AddTransient<ImailService, NullMailService>();
             services.AddTransient<IRepository<Product>, ProductRepository>();
             services.AddTransient<IRepository<Order>, OrderRepository>();
@@ -55,7 +56,7 @@ namespace DutchTreat
                     "/{controller}/{action}/{id?}",
                     new {controller = "App", Action="Index"});
             });
-
+            // Seeding of the database with some dummy data
             if(env.IsDevelopment()){
                 using(var scope = app.ApplicationServices.CreateScope()){
                     var seeder = scope.ServiceProvider.GetService<DbSeeder>();
